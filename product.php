@@ -51,7 +51,24 @@ $product = $result->fetch_assoc();
 
 <div class="container">
 
-    <a href="index.php" class="back-to-catalog">
+    <?php
+    // Dynamically set the "back to catalog" link, including an anchor to the product
+    $category_part = '';
+    if (isset($_GET['cat'])) {
+        $category_part = 'cat=' . intval($_GET['cat']);
+    }
+
+    // The product ID ($id) is available from the main query on this page
+    $anchor_part = '#product-' . $id;
+
+    $back_link = 'index.php';
+    if (!empty($category_part)) {
+        $back_link .= '?' . $category_part . $anchor_part;
+    } else {
+        $back_link .= $anchor_part;
+    }
+    ?>
+    <a href="<?php echo $back_link; ?>" class="back-to-catalog">
         <i class="fa-solid fa-arrow-left"></i> Torna al catalogo
     </a>
 

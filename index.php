@@ -77,6 +77,12 @@ include 'header.php'; // Carica logo, menu e apre la sessione
         echo "<p style='color:red'>Errore Database: " . $conn->error . "</p>";
     } elseif ($result->num_rows > 0) {
         
+        // Prepare the category parameter to be appended to product links
+        $category_param = '';
+        if (isset($_GET['cat'])) {
+            $category_param = '&cat=' . intval($_GET['cat']);
+        }
+
         // ============================================================
         // IL LOOP (Generazione Card)
         // ============================================================
@@ -85,10 +91,10 @@ include 'header.php'; // Carica logo, menu e apre la sessione
     ?>
         
         <!-- INIZIO CARD PRODOTTO SINGOLA -->
-        <div class="card">
+        <div class="card" id="product-<?php echo $row['id']; ?>">
             
             <!-- Link sull'immagine -->
-            <a href="product.php?id=<?php echo $row['id']; ?>" style="text-decoration: none; display: block;">
+            <a href="product.php?id=<?php echo $row['id'] . $category_param; ?>" style="text-decoration: none; display: block;">
                 <div style="height: 180px; background-color: white; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                     <!-- Immagine dal DB (cartella uploads/) -->
                     <img src="uploads/<?php echo $row['immagine']; ?>" alt="<?php echo htmlspecialchars($row['nome']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
@@ -97,7 +103,7 @@ include 'header.php'; // Carica logo, menu e apre la sessione
 
             <div class="card-body">
                 <!-- Titolo Prodotto -->
-                <a href="product.php?id=<?php echo $row['id']; ?>" style="text-decoration: none; color: inherit;">
+                <a href="product.php?id=<?php echo $row['id'] . $category_param; ?>" style="text-decoration: none; color: inherit;">
                     <h3><?php echo htmlspecialchars($row['nome']); ?></h3>
                 </a>
 
@@ -129,7 +135,7 @@ include 'header.php'; // Carica logo, menu e apre la sessione
                 </div> 
                 
                 <!-- Link dettagli (nascosto dal CSS attuale, ma utile per SEO) -->
-                <a href="product.php?id=<?php echo $row['id']; ?>" class="link-details">Vedi dettagli</a>
+                <a href="product.php?id=<?php echo $row['id'] . $category_param; ?>" class="link-details">Vedi dettagli</a>
             </div> 
         </div> 
         <!-- FINE CARD -->

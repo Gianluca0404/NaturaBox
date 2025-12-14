@@ -134,8 +134,9 @@ if (isset($_SESSION['user_id'])) {
     </div>
 
     <div class="sub-nav">
+        <?php $current_cat_id = isset($_GET['cat']) ? intval($_GET['cat']) : null; ?>
         <ul>
-            <li><a href="index.php">Tutti</a></li>
+            <li><a href="index.php" class="<?php echo ($current_cat_id === null) ? 'active-category' : ''; ?>">Tutti</a></li>
             <?php
             // MENU DINAMICO:
             // Invece di scrivere i link a mano <li>Cani</li> <li>Gatti</li>...
@@ -147,7 +148,9 @@ if (isset($_SESSION['user_id'])) {
             if ($cat_res) { 
                 // Ciclo While: Per ogni categoria trovata, stampa un <li>
                 while($cat = $cat_res->fetch_assoc()) {
-                    echo '<li><a href="index.php?cat='.$cat['id'].'">'.$cat['nome'].'</a></li>';
+                    // Check if the current category in the loop is the active one
+                    $is_active = ($current_cat_id == $cat['id']) ? 'active-category' : ''; // Use non-strict comparison for safety
+                    echo '<li><a href="index.php?cat='.$cat['id'].'" class="'.$is_active.'">'.$cat['nome'].'</a></li>';
                 }
             }
             ?>
@@ -162,8 +165,10 @@ if (basename($_SERVER['PHP_SELF']) == 'index.php' && !isset($_GET['q'])):
     <!-- Contenitore Slider (Gestito dal JavaScript in script.js) -->
     <div class="welcome-slider-container">
         <div class="slider-overlay">
-            <h1>Benvenuto su NaturaBox</h1>
-            <p>Le migliori offerte e novità per i tuoi amici a quattro zampe!</p>
+            <div class="slider-text-group">
+                <h1>Benvenuto su NaturaBox</h1>
+                <p>Le migliori offerte e novità per i tuoi amici a quattro zampe!</p>
+            </div>
             <form action="index.php" method="GET" class="search-bar">
                 <input type="text" name="q" placeholder="Cerca tra centinaia di prodotti..." id="searchInput" class="search-input-field" 
                        value="<?php echo isset($_GET['q']) ? htmlspecialchars($_GET['q']) : ''; ?>">
