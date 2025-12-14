@@ -141,8 +141,8 @@ header {
 }
 
 .slider-overlay .search-bar {
-  margin-top: 25px;
   max-width: 550px;
+  width: 100%;
 }
 
 .slider-overlay .search-bar input {
@@ -321,6 +321,11 @@ header {
   color: var(--accent);
 }
 
+.sub-nav ul li a.active-category {
+  color: var(--accent); /* Match hover state */
+  font-weight: bold; /* Make it a bit more prominent */
+}
+
 /* ==========================================================================
    6. FOOTER (Grid Layout)
    ==========================================================================
@@ -467,7 +472,9 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between; /* Pushes text to top, search to bottom */
+  padding-top: 8%;
+  padding-bottom: 8%;
   text-align: center;
   z-index: 10;
 }
@@ -508,6 +515,7 @@ footer {
   display: flex;
   flex-direction: column; /* Contenuto verticale */
   transition: transform 0.3s;
+  scroll-margin-top: 120px; /* Offset for the sticky header when scrolling to an anchor */
 }
 
 /* Effetto al passaggio del mouse sulla card */
@@ -862,6 +870,7 @@ footer {
 
 /* Mobile (max 768px) */
 @media (max-width: 768px) {
+
   /* Nasconde il separatore "/" nell'header */
   .nav-separator {
     display: none;
@@ -885,8 +894,63 @@ footer {
     grid-template-columns: 1fr;
   }
 
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* Hide username text in header for mobile */
+  header .navbar .user-actions a span {
+    display: none;
+  }
+
+  /* Sub-navigation categories mobile adjustments */
+  .sub-nav ul {
+    justify-content: flex-start; /* Align to the left */
+    flex-wrap: wrap;           /* Allow items to wrap to next line */
+    padding: 10px 15px;        /* Padding for the container */
+    gap: 20px;                 /* Increased space between text items */
+  }
+
+  .sub-nav a {
+    font-size: 0.85rem; /* Reduced font size for mobile categories */
+  }
+
   .welcome-slider-container {
-    height: 250px; /* Slider più basso su mobile */
+    height: 350px; /* Slider più alto su mobile */
+  }
+
+  .slider-overlay {
+    justify-content: flex-start; /* Aligns content to the top */
+    padding-top: 40px; /* Increased padding to move text lower */
+    padding-bottom: 20px;
+  }
+
+  .slider-overlay .slider-text-group {
+    margin-bottom: auto; /* Push it down, creating space below the text */
+  }
+  
+  .slider-overlay h1 {
+    font-size: 1.6rem;
+  }
+  
+  .slider-overlay p {
+    font-size: 1rem;
+  }
+
+  .slider-overlay .search-bar input {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .slider-overlay .search-bar button {
+    padding: 10px 18px;
+  }
+
+  .slider-overlay .search-bar {
+    width: 90%; /* Take 90% of the available width */
+    margin-top: auto; /* Push it down from the text group */
+    margin-bottom: 40px; /* Specific margin from bottom */
   }
 
   .product-wrapper {
@@ -910,7 +974,7 @@ footer {
     height: 60px;
   }
 
-  /* Cart Page Responsive */
+  /* Cart Page Responsive styles were moved to the main scope (mobile-first) */
 
   .cart-item {
     flex-direction: row;
@@ -927,8 +991,8 @@ footer {
   }
 
   .cart-item-body {
-    width: 100%;
-
+    flex: 1; /* Allow this element to grow and shrink */
+    min-width: 0; /* Prevents overflow with long product names */
     padding-top: 10px; /* Adjust top padding to align with image */
   }
 
@@ -937,29 +1001,26 @@ footer {
   }
 
   .cart-item-footer {
-    flex-direction: row; /* Change to row to put quantity and subtotal side-by-side */
-
-    justify-content: space-between; /* Push items to ends */
-
-    align-items: flex-end; /* Align to the bottom if there's extra space */
-
-    margin-top: 10px; /* Add some space above it */
-
+    display: flex;
+    flex-direction: column; /* Stack the form and subtotal */
+    align-items: flex-end; /* Right-align the children */
+    justify-content: space-between; /* Push subtotal to the bottom */
+    margin-top: 15px;
     width: 100%;
+    gap: 15px; /* Add space between the stacked items */
+    height: 100%; /* Ensure footer takes available height to use space-between */
   }
-
   .cart-item-quantity-form {
-    justify-content: flex-start; /* Align quantity form to the left */
+    justify-content: flex-start;
+    /* The form can now be wider if needed */
   }
 
   .cart-item-subtotal {
-    text-align: right; /* Keep text aligned right */
-
-    width: auto; /* Let it take content width */
-
-    font-size: 1.5rem; /* Make it more prominent */
+    text-align: right; /* Align subtotal text to the right */
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: auto; /* Ensure it can adapt */
   }
-
   .form-grid-2-col,
   .form-flex-2-col {
     grid-template-columns: 1fr;
@@ -967,6 +1028,17 @@ footer {
     flex-direction: column;
 
     gap: 15px;
+  }
+
+  /* Checkout Page Responsive */
+  .checkout-layout {
+    flex-direction: column;
+  }
+
+  .checkout-forms-column,
+  .checkout-summary-column {
+    width: 100%;
+    min-width: 0; /* Remove min-width constraint on mobile */
   }
   /* Profile Page Responsive */
   .orders-table th,
@@ -1182,41 +1254,71 @@ footer {
   margin-bottom: 30px;
   border-bottom: 2px solid #eee;
   padding-bottom: 10px;
-  margin-left: 15px;
-  margin-right: 15px;
 }
 
 .cart-layout {
   display: flex;
-  gap: 40px;
-  flex-wrap: wrap;
+  flex-direction: column; /* Mobile-first: stacked by default */
+  gap: 30px;
   align-items: flex-start;
 }
 
 .cart-items-column {
-  flex: 2;
-  min-width: 350px;
+  width: 100%;
 }
 
 .cart-item {
   display: flex;
-  gap: 20px;
-  align-items: center;
+  flex-direction: column;
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 15px;
   border-radius: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   background: white;
 }
 
-.cart-item-image {
-  width: 80px;
-  height: 80px;
-  overflow: hidden;
-  border-radius: 6px;
-  flex-shrink: 0;
+.cart-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertically center title and button */
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  width: 100%; /* Explicitly make it full width */
 }
 
+.cart-item-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: left;
+  word-break: break-word;
+  flex-grow: 1; /* Allow title to take up available space */
+  padding-right: 10px; /* Space between title and button */
+}
+.cart-item-title a {
+  color: var(--text-dark);
+}
+
+.btn-remove-item {
+  color: var(--danger);
+  font-size: 1.2rem;
+  flex-shrink: 0; /* Prevent button from shrinking */
+  padding: 5px; /* Increase tappable area */
+}
+
+.cart-item-main-content {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.cart-item-image {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  overflow: hidden;
+}
 .cart-item-img {
   width: 100%;
   height: 100%;
@@ -1225,57 +1327,22 @@ footer {
 
 .cart-item-details {
   flex-grow: 1;
-}
-
-.cart-item-body {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  gap: 5px;
-}
-
-.cart-item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.cart-item-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: auto; /* Push to the bottom */
-  padding-top: 10px;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-.cart-item-title {
-  font-size: 1.1rem;
-  margin-bottom: 5px;
-  color: var(--text-dark);
+  position: relative; /* For absolute positioning if needed, but subtotal is flex-end */
 }
 
 .cart-item-unit-price {
   font-size: 0.9rem;
   color: #888;
+  margin-bottom: 10px;
 }
 
 .cart-item-quantity-form {
   display: flex;
   align-items: center;
   gap: 5px;
-  flex-shrink: 0;
+  margin-bottom: 10px;
 }
 
 .quantity-input {
@@ -1297,28 +1364,52 @@ footer {
 }
 
 .cart-item-subtotal {
-  text-align: right;
+  margin-top: auto; /* Push to the bottom */
+  align-self: flex-end; /* Push to the right */
   font-weight: bold;
-  font-size: 1.2rem;
-  width: 120px;
-  flex-shrink: 0;
+  font-size: 1.4rem;
+  color: var(--primary);
 }
 
-.btn-remove-item {
-  color: var(--danger);
-  font-size: 1.2rem;
-  margin-left: 10px;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 .cart-summary-column {
-  flex: 1;
-  min-width: 250px;
+  width: 100%;
   background: var(--white);
   padding: 20px;
   border-radius: 8px;
   box-shadow: var(--shadow);
   border: 1px solid #eee;
 }
+
+/* Desktop styles for cart */
+@media (min-width: 769px) {
+  .cart-layout {
+    flex-direction: row;
+    gap: 40px;
+  }
+  .cart-items-column {
+    flex: 2;
+    min-width: 350px;
+    width: auto;
+  }
+  .cart-summary-column {
+    flex: 1;
+    min-width: 250px;
+    width: auto;
+  }
+}
+
 
 .summary-title {
   font-size: 1.3rem;
@@ -1344,7 +1435,7 @@ footer {
   padding-top: 15px;
   display: flex;
   justify-content: space-between;
-  font-size: 1.5rem;
+  font-size: 1.3rem; /* Reduced font size */
   font-weight: bold;
 }
 
@@ -1355,6 +1446,7 @@ footer {
   align-items: center;
   justify-content: center;
   height: 50px;
+  font-size: 0.85rem; /* Slightly reduced font size as requested */
 }
 
 .empty-cart-container {

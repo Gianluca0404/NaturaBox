@@ -48,27 +48,29 @@ $cart_items = $stmt->get_result();
                 ?>
                 
                 <div class="cart-item">
-                    <div class="cart-item-image">
-                        <img src="uploads/<?php echo $item['immagine']; ?>" 
-                             alt="<?php echo htmlspecialchars($item['nome']); ?>" 
-                             class="cart-item-img">
-                    </div>
-                    <div class="cart-item-body">
-                        <div class="cart-item-header">
-                            <h3 class="cart-item-title">
-                                <a href="product.php?id=<?php echo $item['product_id']; ?>">
-                                    <?php echo htmlspecialchars($item['nome']); ?>
-                                </a>
-                            </h3>
-                            <a href="cart_action.php?action=remove&product_id=<?php echo $item['product_id']; ?>" 
-                               class="btn-remove-item" title="Rimuovi">
-                                <i class="fa-solid fa-trash-can"></i>
+                    <div class="cart-item-header">
+                        <h3 class="cart-item-title">
+                            <a href="product.php?id=<?php echo $item['product_id']; ?>">
+                                <?php echo htmlspecialchars($item['nome']); ?>
                             </a>
+                        </h3>
+                        <a href="cart_action.php?action=remove&product_id=<?php echo $item['product_id']; ?>" 
+                           class="btn-remove-item" title="Rimuovi">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </a>
+                    </div>
+
+                    <div class="cart-item-main-content">
+                        <div class="cart-item-image">
+                            <img src="uploads/<?php echo $item['immagine']; ?>" 
+                                 alt="<?php echo htmlspecialchars($item['nome']); ?>" 
+                                 class="cart-item-img">
                         </div>
-                        <p class="cart-item-unit-price">
-                            Prezzo Unitario: € <?php echo number_format($item['prezzo'], 2); ?>
-                        </p>
-                        <div class="cart-item-footer">
+                        <div class="cart-item-details">
+                            <p class="cart-item-unit-price">
+                                Prezzo Unitario: € <?php echo number_format($item['prezzo'], 2); ?>
+                            </p>
+                            
                             <form action="cart_action.php" method="POST" class="cart-item-quantity-form">
                                 <input type="hidden" name="product_id" value="<?php echo $item['product_id']; ?>">
                                 <input type="hidden" name="action" value="update">
@@ -78,6 +80,7 @@ $cart_items = $stmt->get_result();
                                     Aggiorna
                                 </button>
                             </form>
+                            
                             <div class="cart-item-subtotal">
                                 € <?php echo number_format($subtotal, 2); ?>
                             </div>
@@ -93,16 +96,15 @@ $cart_items = $stmt->get_result();
                 
                 <div class="summary-row">
                     <span>Subtotale Prodotti:</span>
-                    <span>€ <?php echo number_format($total_cart_price, 2); ?></span>
+                    <span>€&nbsp;<?php echo number_format($total_cart_price, 2); ?></span>
                 </div>
                 <div class="summary-row">
                     <span>Spedizione:</span>
-                    <span>€ <?php echo number_format($shipping_cost, 2); ?></span>
+                    <span>€&nbsp;<?php echo number_format($shipping_cost, 2); ?></span>
                 </div>
 
                 <div class="summary-total">
-                    <span>Totale (IVA Inclusa):</span>
-                    <span>€ <?php echo number_format($total_cart_price + $shipping_cost, 2); ?></span>
+                    <span>Totale (IVA Inclusa):</span>&nbsp;<span>€&nbsp;<?php echo number_format($total_cart_price + $shipping_cost, 2); ?></span>
                 </div>
 
                 <a href="checkout.php" class="btn-large btn-checkout">
