@@ -1,7 +1,3 @@
-Capito! Ecco un **README** in inglese per il progetto **NaturaBox**, senza l'elenco dei documenti specifici, ma che descrive comunque il funzionamento generale del progetto:
-
----
-
 # NaturaBox - E-commerce for Pet Products
 
 NaturaBox is a simple e-commerce platform designed to sell pet products. The site allows customers to browse, search, and purchase various items for their pets, providing a seamless shopping experience. It includes essential features like user authentication (registration and login), a shopping cart system, and an order checkout process.
